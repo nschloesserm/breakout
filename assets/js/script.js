@@ -65,7 +65,7 @@ function play() {
     }
 
     if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width && ball.y + ball.radius >= canvas.height- 12 - paddle.height) {
-        ball.dy *= -1.08;
+        ball.dy *= -1.1;
     }
 
     requestAnimationFrame(play);
