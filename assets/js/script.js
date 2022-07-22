@@ -5,6 +5,8 @@ canvas.height = 600;
 canvas.width = 600;
 
 let speed = 3;
+let life = 5;
+let c = '#61abc0';
 
 let ball = {
     x: canvas.width/2,
@@ -26,10 +28,10 @@ let paddle = {
     width: 100,
     x: canvas.width/2 - 50,
     y: canvas.height - 30,
-    draw: function() {
+    draw: function(c) {
         ctx.beginPath();
         ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = '#61abc0';
+        ctx.fillStyle = c;
         ctx.closePath();
         ctx.fill();
     }
@@ -65,6 +67,7 @@ function play() {
     }
 
     if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width && ball.y + ball.radius >= canvas.height- 12 - paddle.height) {
+        paddle.draw('#ddeff9');
         ball.dy *= -1.1;
     }
 
