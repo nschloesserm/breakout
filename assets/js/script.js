@@ -38,5 +38,8 @@ function play() {
 
     requestAnimationFrame(play);
 }
+function startGame() {
+    play();
 
-play();
+    document.getElementById('startButton').style.visibility = 'hidden';
+}
