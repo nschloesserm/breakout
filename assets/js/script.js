@@ -11,7 +11,7 @@ let ball = {
     y: canvas.height - 100,
     dx: speed,
     dy: -speed + 1,
-    radius: 7,
+    radius: 8,
     draw: function() {
         ctx.beginPath();
         ctx.fillStyle = '#61abc0';
