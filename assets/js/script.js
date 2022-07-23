@@ -36,6 +36,17 @@ let paddle = {
         ctx.fill();
     }
 }
+function bricks () {
+for (let j = 0; j < 8; j++) {
+    for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        ctx.rect(i * canvas.width/8 + 7.5, j * 30 + 7.5, 60, 20);
+        ctx.fillStyle = '#61abc0';
+        ctx.closePath();
+        ctx.fill();
+    }
+}
+}
 
 window.addEventListener('keydown', (event) => {
     switch (event.key) {
@@ -48,6 +59,7 @@ function play() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     ball.draw();
     paddle.draw();
+    bricks();
 
     ball.x += ball.dx;
     ball.y += ball.dy;
@@ -66,9 +78,17 @@ function play() {
         ball.dy = -speed + 1;
     }
 
-    if (ball.x >= paddle.x && ball.x <= paddle.x + paddle.width && ball.y + ball.radius >= canvas.height- 12 - paddle.height) {
+    if (ball.x >= paddle.x 
+        && ball.x <= paddle.x + paddle.width 
+        && ball.y + ball.radius >= canvas.height- 12 - paddle.height) {
         paddle.draw('#ddeff9');
         ball.dy *= -1.1;
+    }
+
+    if (ball.x >= bricks.x 
+        && ball.x <= bricks.x + bricks.width 
+        && ball.y + ball.radius >= canvas.height- 12 - bricks.height) {
+        ball.dy *= -1;
     }
 
     requestAnimationFrame(play);
