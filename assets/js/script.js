@@ -36,11 +36,14 @@ let paddle = {
         ctx.fill();
     }
 }
+
+var brick = {x: canvas.width/8, y: 30, w: 60, h: 20}
+
 function bricks () {
 for (let j = 0; j < 8; j++) {
     for (let i = 0; i < 8; i++) {
         ctx.beginPath();
-        ctx.rect(i * canvas.width/8 + 7.5, j * 30 + 7.5, 60, 20);
+        ctx.rect(i * brick.x + 7.5, j * brick.y + 7.5, brick.w, brick.h);
         ctx.fillStyle = '#61abc0';
         ctx.closePath();
         ctx.fill();
