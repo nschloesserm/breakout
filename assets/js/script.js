@@ -1,5 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const brickArray = [];
 
 canvas.height = 600;
 canvas.width = 600;
@@ -37,18 +38,36 @@ let paddle = {
     }
 }
 
-var brick = {x: canvas.width/8, y: 30, w: 60, h: 20}
 
-function bricks () {
-for (let j = 0; j < 8; j++) {
-    for (let i = 0; i < 8; i++) {
+let brick  = {
+    height: 20,
+    width: 60,
+    x: 7.5,
+    y: 20,
+    draw: function() {
         ctx.beginPath();
-        ctx.rect(i * brick.x + 7.5, j * brick.y + 7.5, brick.w, brick.h);
+        ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = '#61abc0';
         ctx.closePath();
         ctx.fill();
-    }
 }
+}
+
+function bricks() {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            brick.x = j * canvas.width/8 + 7.5;
+            brick.y = i * canvas.height/18 + 20;
+            brickArray.push(brick.x);
+            brick.draw();
+            console.log(brickArray);
+        }
+}
+}
+
+function destroyBrick() {
+    brick.height = 0
+    brick.width = 0
 }
 
 window.addEventListener('keydown', (event) => {
@@ -62,7 +81,7 @@ function play() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     ball.draw();
     paddle.draw();
-    bricks();
+    brick.draw();
 
     ball.x += ball.dx;
     ball.y += ball.dy;
@@ -88,11 +107,19 @@ function play() {
         ball.dy *= -1.1;
     }
 
+    if (ball.x >= brick.x 
+        && ball.y <= brick.y + brick.width 
+        && ball.y + ball.radius <= canvas.height + brick.y) {
+        ball.dy *= -1;
+        destroyBrick();
+    }
+
     requestAnimationFrame(play);
 }
 
+
+
 function startGame() {
     play();
-
     document.getElementById('startButton').style.visibility = 'hidden';
 }
