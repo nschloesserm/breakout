@@ -85,12 +85,6 @@ function play() {
         ball.dy *= -1.1;
     }
 
-    if (ball.x >= bricks.x 
-        && ball.x <= bricks.x + bricks.width 
-        && ball.y + ball.radius >= canvas.height- 12 - bricks.height) {
-        ball.dy *= -1;
-    }
-
     requestAnimationFrame(play);
 }
 
