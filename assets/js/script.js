@@ -7,13 +7,14 @@ canvas.width = 600;
 
 let speed = 3;
 let life = 5;
+let score = 0;
 let c = '#61abc0';
 
 let ball = {
     x: canvas.width/2,
     y: canvas.height - 100,
     dx: speed,
-    dy: -speed * Math.random() - 0.2,
+    dy: -speed * Math.random() - 1,
     radius: 8,
     draw: function() {
         ctx.beginPath();
@@ -38,80 +39,62 @@ let paddle = {
     }
 }
 
+let bricks = [];
 
-let brick  = {
-    height: 20,
-    width: 60,
-    x: 7.5,
-    y: 20,}
-
-function drawBrick() {
-    ctx.beginPath();
-    ctx.rect(brick.x, brick.y, brick.width, brick.height);
-    ctx.fillStyle = '#61abc0';
-    ctx.closePath();
-    ctx.fill();
+for (let i = 0; i < 8; i++) {
+    bricks[i] = [];
+    for (let j = 0; j < 8; j++) {
+        bricks[i][j] = { x: 0, y: 0, status: 1 };
+    }
 }
-
-let brickTwo  = {
-    height: 20,
-    width: 60,
-    x: canvas.width/8 + 7.5,
-    y: 20,}
-
-function drawBrickTwo() {
-    ctx.beginPath();
-    ctx.rect(brickTwo.x, brickTwo.y, brickTwo.width, brickTwo.height);
-    ctx.fillStyle = '#61abc0';
-    ctx.closePath();
-    ctx.fill();
-}
-
-// function bricks() {
-//     for (let i = 0; i < 8; i++) {
-//         for (let j = 0; j < 8; j++) {
-//             brick.x = j * canvas.width/8 + 7.5;
-//             brick.y = i * canvas.height/18 + 20;
-//             brick.draw();
-//         }
-//     }
-// }
 
 function collision() {
-    if (ball.x < brick.x + brick.width 
-        && ball.x + ball.radius  > brick.x  
-        && ball.y < brick.x + brick.height
-        && ball.radius + ball.y > brick.y - 10) {
-        ball.dy *= -1;
-        destroyBrick();
-    }
-
-    if (ball.x < brickTwo.x + brickTwo.width 
-        && ball.x + ball.radius  > brickTwo.x  
-        && ball.y < brickTwo.x + brickTwo.height 
-        && ball.radius + ball.y > brickTwo.y - 10) {
-        ball.dy *= -1;
-        destroyBrickTwo()
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if (bricks[i][j].status == 1) {
+                if (ball.x > bricks[i][j].x && 
+                    ball.x < bricks[i][j].x + canvas.width/8 && 
+                    ball.y > bricks[i][j].y && 
+                    ball.y < bricks[i][j].y + 20) {
+                    ball.dy *= -1;
+                    bricks[i][j].status = 0;
+                }
+            }
+        }
     }
 }
 
-function destroyBrick() {
-    brick.height = 0
-    brick.width = 0
+function drawBricks() {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+            if (bricks[i][j].status == 1) {
+                var brickX = (i * (canvas.width/8 + 10) + 7.5);
+                var brickY = (j * (20 + 10)) + 30;
+                bricks[i][j].x = brickX;
+                bricks[i][j].y = brickY;
+                ctx.beginPath();
+                ctx.rect(brickX, brickY, canvas.width/8, 20);
+                ctx.fillStyle = '#61abc0';
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+    }
 }
 
-function destroyBrickTwo() {
-    brickTwo.height = 0
-    brickTwo.width = 0
+function resetBall() {
+    ball.x = canvas.width/2;
+    ball.y = canvas.height - 100;
+    ball.dy = -speed * Math.random() - 1;
 }
 
 function play() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
+    drawBricks();
     ball.draw();
     paddle.draw();
-    drawBrick();
-    drawBrickTwo();
     collision();
+    
 
     ball.x += ball.dx;
     ball.y += ball.dy;
@@ -125,9 +108,7 @@ function play() {
     }
 
     if (ball.y + ball.radius > canvas.height) {
-        ball.x = canvas.width/2;
-        ball.y = canvas.height - 100;
-        ball.dy = -speed + 1;
+        setTimeout(() => {  resetBall(); }, 500);
     }
 
     if (ball.x >= paddle.x 
