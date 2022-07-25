@@ -179,6 +179,9 @@ function startGame() {
             bricks[i][j] = { x: 0, y: 0, status: 1 };
         }
     }
+    paddle.x = canvas.width/2 - 50;
+    paddle.y = canvas.height - 30;
+    resetBall();
     play();
     document.getElementById('startButton').style.visibility = 'hidden';
 }
