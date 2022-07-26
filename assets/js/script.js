@@ -98,7 +98,6 @@ function resetBall() {
     }
 }
 
-
 function drawScore() {
     ctx.font = '25px Arial';
     ctx.fillStyle = '#4285F4';
@@ -121,12 +120,14 @@ function drawGameOver() {
     ctx.font = '50px Arial';
     ctx.fillStyle = '#4285F4';
     ctx.fillText(`GAME OVER`, canvas.width / 4, canvas.height / 2);
+    document.getElementById("startButton").innerHTML = "PLAY AGAIN?";
 }
 
 function drawCongrats() {
     ctx.font = '40px Arial';
     ctx.fillStyle = '#4285F4';
     ctx.fillText(`Congratulations! You Win!`, canvas.width / 8, canvas.height / 2);
+    document.getElementById("startButton").innerHTML = "PLAY AGAIN?";
 }
 
 function play() {
@@ -184,7 +185,7 @@ window.addEventListener('keydown', (event) => {
 })
 
 function drawTitle() {
-    ctx.font = 'bold 80px Jazz LET';
+    ctx.font = 'bold 80px serif';
     letterArray = ['B', 'R', 'E', 'A', 'K', 'O', 'U', 'T'];
     letterColorArray = ['#4285F4', '#DB4437', '#F4B400', '#4285F4', '#0F9D58', '#DB4437', '#4285F4', '#DB4437'];
     for (let l = 0; l < 8; l++) {
@@ -194,7 +195,7 @@ function drawTitle() {
 }
 
 function drawInstructions() {
-    ctx.font = '22px Jazz LET';
+    ctx.font = '22px serif';
     ctx.fillStyle = '#4285F4';
     var instructText = ['      Try and break all the bricks before you lose all your lives!',
         'Control the paddle with the left and right arrows on your keyboard.',
