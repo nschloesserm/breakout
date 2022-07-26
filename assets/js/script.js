@@ -180,7 +180,7 @@ function play() {
         ball.dy *= -1;
     }
 
-    //next if statement reverses direction of ball if intersects paddle, and briefly changes color for effect
+    //next if statement reverses direction of ball if intersects paddle, and briefly changes color for effect. It also speeds up the ball by .1 to increase dificulty
 
     if (ball.x >= paddle.x &&
         ball.x <= paddle.x + paddle.width &&
