@@ -11,14 +11,14 @@ let score = 0;
 let c = '#61abc0';
 
 let ball = {
-    x: canvas.width/2,
+    x: canvas.width / 2,
     y: canvas.height - 100,
     dx: speed,
     dy: -speed * Math.random() - 1,
     radius: 8,
-    draw: function() {
+    draw: function () {
         ctx.beginPath();
-        ctx.fillStyle = '#61abc0';
+        ctx.fillStyle = '#4285F4';
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
@@ -28,9 +28,9 @@ let ball = {
 let paddle = {
     height: 12,
     width: 100,
-    x: canvas.width/2 - 50,
+    x: canvas.width / 2 - 50,
     y: canvas.height - 30,
-    draw: function(c) {
+    draw: function (c) {
         ctx.beginPath();
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.fillStyle = c;
@@ -44,7 +44,11 @@ let bricks = [];
 for (let i = 0; i < 8; i++) {
     bricks[i] = [];
     for (let j = 0; j < 8; j++) {
-        bricks[i][j] = { x: 0, y: 0, status: 1 };
+        bricks[i][j] = {
+            x: 0,
+            y: 0,
+            status: 1
+        };
     }
 }
 
@@ -52,9 +56,9 @@ function collision() {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if (bricks[i][j].status == 1) {
-                if (ball.x > bricks[i][j].x && 
-                    ball.x < bricks[i][j].x + canvas.width/8 && 
-                    ball.y > bricks[i][j].y && 
+                if (ball.x > bricks[i][j].x &&
+                    ball.x < bricks[i][j].x + canvas.width / 8 &&
+                    ball.y > bricks[i][j].y &&
                     ball.y < bricks[i][j].y + 20) {
                     ball.dy *= -1;
                     bricks[i][j].status = 0;
@@ -69,13 +73,14 @@ function drawBricks() {
     for (let i = 0; i < 8; i++) {
         for (let j = 0; j < 8; j++) {
             if (bricks[i][j].status == 1) {
-                var brickX = (i * (canvas.width/9 + 7.5)) + 7.5;
+                var brickX = (i * (canvas.width / 9 + 7.5)) + 7.5;
                 var brickY = (j * 25) + 35;
+                var brickColor = colorArray[i];
                 bricks[i][j].x = brickX;
                 bricks[i][j].y = brickY;
                 ctx.beginPath();
-                ctx.rect(brickX, brickY, canvas.width/9, 20);
-                ctx.fillStyle = '#61abc0';
+                ctx.rect(brickX, brickY, canvas.width / 9, 20);
+                ctx.fillStyle = brickColor;
                 ctx.fill();
                 ctx.closePath();
             }
@@ -83,47 +88,49 @@ function drawBricks() {
     }
 }
 
+var colorArray = ['#4285F4', '#DB4437', '#F4B400', '#4285F4', '#0F9D58', '#DB4437', '#4285F4', '#F4B400'];
+
 function resetBall() {
     if (ball.y + ball.radius > canvas.height) {
-        ball.x = canvas.width/2;
+        ball.x = canvas.width / 2;
         ball.y = canvas.height - 100;
         ball.dy = -speed * Math.random() - 1;
-    } 
+    }
 }
 
 
 function drawScore() {
     ctx.font = '25px Arial';
-    ctx.fillStyle = '#61abc0';
+    ctx.fillStyle = '#4285F4';
     ctx.fillText(`Score: ${score}`, 7.5, 22.5);
-  }
+}
 
-  function drawLives() {
+function drawLives() {
     ctx.font = '25px Arial';
-    ctx.fillStyle = '#61abc0';
+    ctx.fillStyle = '#4285F4';
     ctx.fillText(`Life: ${life}`, canvas.width - 77.5, 22.5);
-  }
+}
 
-  function decreaseLife() {
+function decreaseLife() {
     if (ball.y + ball.radius > canvas.height) {
         life = life - 1;
     }
-  }
+}
 
-  function drawGameOver() {
+function drawGameOver() {
     ctx.font = '50px Arial';
-    ctx.fillStyle = '#61abc0';
-    ctx.fillText(`GAME OVER`, canvas.width/4, canvas.height/2);
-  }
+    ctx.fillStyle = '#4285F4';
+    ctx.fillText(`GAME OVER`, canvas.width / 4, canvas.height / 2);
+}
 
-  function drawCongrats() {
+function drawCongrats() {
     ctx.font = '40px Arial';
-    ctx.fillStyle = '#61abc0';
-    ctx.fillText(`Congratulations! You Win!`, canvas.width/8, canvas.height/2);
-  }
+    ctx.fillStyle = '#4285F4';
+    ctx.fillText(`Congratulations! You Win!`, canvas.width / 8, canvas.height / 2);
+}
 
 function play() {
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     drawScore();
     drawLives();
     drawBricks();
@@ -132,7 +139,7 @@ function play() {
     collision();
     decreaseLife();
     resetBall();
-    
+
 
     ball.x += ball.dx;
     ball.y += ball.dy;
@@ -145,21 +152,21 @@ function play() {
         ball.dy *= -1;
     }
 
-    if (ball.x >= paddle.x 
-        && ball.x <= paddle.x + paddle.width 
-        && ball.y + ball.radius >= canvas.height- 12 - paddle.height) {
+    if (ball.x >= paddle.x &&
+        ball.x <= paddle.x + paddle.width &&
+        ball.y + ball.radius >= canvas.height - 12 - paddle.height) {
         paddle.draw('#ddeff9');
         ball.dy *= -1.1;
     }
 
     if (life > 0 && score < 64) {
-    requestAnimationFrame(play);
-    } else  if (score === 64) {
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        requestAnimationFrame(play);
+    } else if (score === 64) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         drawCongrats();
         document.getElementById('startButton').style.visibility = 'visible'
     } else {
-        ctx.clearRect(0,0,canvas.width,canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
         drawGameOver();
         document.getElementById('startButton').style.visibility = 'visible'
     }
@@ -167,41 +174,52 @@ function play() {
 
 window.addEventListener('keydown', (event) => {
     switch (event.key) {
-            case 'ArrowLeft' : paddle.x -= 15; break;
-            case 'ArrowRight' : paddle.x += 15; break;
+        case 'ArrowLeft':
+            paddle.x -= 15;
+            break;
+        case 'ArrowRight':
+            paddle.x += 15;
+            break;
     }
 })
+
 function drawTitle() {
     ctx.font = 'bold 80px Jazz LET';
     letterArray = ['B', 'R', 'E', 'A', 'K', 'O', 'U', 'T'];
     letterColorArray = ['#4285F4', '#DB4437', '#F4B400', '#4285F4', '#0F9D58', '#DB4437', '#4285F4', '#DB4437'];
     for (let l = 0; l < 8; l++) {
         ctx.fillStyle = letterColorArray[l];
-        ctx.fillText( letterArray[l], 70 + l * 60, canvas.height/4.5);
+        ctx.fillText(letterArray[l], 70 + l * 60, canvas.height / 4.5);
     }
 }
 
-function drawInstructions(){
+function drawInstructions() {
     ctx.font = '22px Jazz LET';
-    ctx.fillStyle = '#61abc0';
-    var instructText = ['      Try and break all the bricks before you lose all your lives!', 
-                        'Control the paddle with the left and right arrows on your keyboard.',
-                        '           Click on the start button bellow to begin the game!']
+    ctx.fillStyle = '#4285F4';
+    var instructText = ['      Try and break all the bricks before you lose all your lives!',
+        'Control the paddle with the left and right arrows on your keyboard.',
+        '           Click on the start button bellow to begin the game!'
+    ]
     for (let t = 0; t < 3; t++) {
-        ctx.fillText( instructText[t], 5, canvas.height/2.5 + t * 50)
+        ctx.fillText(instructText[t], 5, canvas.height / 2.5 + t * 50)
     }
 }
+
 function startGame() {
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     life = 5;
     score = 0;
     for (let i = 0; i < 8; i++) {
         bricks[i] = [];
         for (let j = 0; j < 8; j++) {
-            bricks[i][j] = { x: 0, y: 0, status: 1 };
+            bricks[i][j] = {
+                x: 0,
+                y: 0,
+                status: 1
+            };
         }
     }
-    paddle.x = canvas.width/2 - 50;
+    paddle.x = canvas.width / 2 - 50;
     paddle.y = canvas.height - 30;
     resetBall();
     play();
