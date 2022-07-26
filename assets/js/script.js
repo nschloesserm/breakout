@@ -171,7 +171,26 @@ window.addEventListener('keydown', (event) => {
             case 'ArrowRight' : paddle.x += 15; break;
     }
 })
+function drawTitle() {
+    ctx.font = 'bold 80px Jazz LET';
+    letterArray = ['B', 'R', 'E', 'A', 'K', 'O', 'U', 'T'];
+    letterColorArray = ['#4285F4', '#DB4437', '#F4B400', '#4285F4', '#0F9D58', '#DB4437', '#4285F4', '#DB4437'];
+    for (let l = 0; l < 8; l++) {
+        ctx.fillStyle = letterColorArray[l];
+        ctx.fillText( letterArray[l], 70 + l * 60, canvas.height/4.5);
+    }
+}
 
+function drawInstructions(){
+    ctx.font = '22px Jazz LET';
+    ctx.fillStyle = '#61abc0';
+    var instructText = ['      Try and break all the bricks before you lose all your lives!', 
+                        'Control the paddle with the left and right arrows on your keyboard.',
+                        '           Click on the start button bellow to begin the game!']
+    for (let t = 0; t < 3; t++) {
+        ctx.fillText( instructText[t], 5, canvas.height/2.5 + t * 50)
+    }
+}
 function startGame() {
     ctx.clearRect(0,0,canvas.width,canvas.height)
     life = 5;
@@ -188,3 +207,6 @@ function startGame() {
     play();
     document.getElementById('startButton').style.visibility = 'hidden';
 }
+
+drawTitle()
+drawInstructions();
