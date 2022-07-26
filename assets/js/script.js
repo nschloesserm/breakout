@@ -10,6 +10,8 @@ let life = 5;
 let score = 0;
 let c = '#61abc0';
 
+// draws game ball and establishs a random direction
+
 let ball = {
     x: canvas.width / 2,
     y: canvas.height - 100,
@@ -24,6 +26,8 @@ let ball = {
         ctx.fill();
     }
 }
+
+//Draws Paddle
 
 let paddle = {
     height: 12,
@@ -41,6 +45,8 @@ let paddle = {
 
 let bricks = [];
 
+//creates a two dimensional array for the bricks to "live" in and establishes brick status to 1
+
 for (let i = 0; i < 8; i++) {
     bricks[i] = [];
     for (let j = 0; j < 8; j++) {
@@ -51,6 +57,8 @@ for (let i = 0; i < 8; i++) {
         };
     }
 }
+
+// changes brick status to 0, increases score, and reverses direction if ball collides with brick
 
 function collision() {
     for (let i = 0; i < 8; i++) {
@@ -68,6 +76,8 @@ function collision() {
         }
     }
 }
+
+//draws brick if status = 1 
 
 function drawBricks() {
     for (let i = 0; i < 8; i++) {
@@ -90,6 +100,8 @@ function drawBricks() {
 
 var colorArray = ['#4285F4', '#DB4437', '#F4B400', '#4285F4', '#0F9D58', '#DB4437', '#4285F4', '#F4B400'];
 
+//resets ball position to start point and sends in random direction
+
 function resetBall() {
     if (ball.y + ball.radius > canvas.height) {
         ball.x = canvas.width / 2;
@@ -98,11 +110,15 @@ function resetBall() {
     }
 }
 
+//draws current score
+
 function drawScore() {
     ctx.font = '25px Arial';
     ctx.fillStyle = '#4285F4';
     ctx.fillText(`Score: ${score}`, 7.5, 22.5);
 }
+
+//draws current life
 
 function drawLives() {
     ctx.font = '25px Arial';
@@ -110,11 +126,15 @@ function drawLives() {
     ctx.fillText(`Life: ${life}`, canvas.width - 77.5, 22.5);
 }
 
+//decreases life if ball intersects with bottom of canvas
+
 function decreaseLife() {
     if (ball.y + ball.radius > canvas.height) {
         life = life - 1;
     }
 }
+
+//draws game over and changes button text to "PLAY AGAIN?"
 
 function drawGameOver() {
     ctx.font = '50px Arial';
@@ -123,12 +143,16 @@ function drawGameOver() {
     document.getElementById("startButton").innerHTML = "PLAY AGAIN?";
 }
 
+//Draws win after score reaches 64 and changes button text to "PLAY AGAIN?"
+
 function drawCongrats() {
     ctx.font = '40px Arial';
     ctx.fillStyle = '#4285F4';
     ctx.fillText(`Congratulations! You Win!`, canvas.width / 8, canvas.height / 2);
     document.getElementById("startButton").innerHTML = "PLAY AGAIN?";
 }
+
+//Play function of entire game started with startGame function
 
 function play() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -141,9 +165,12 @@ function play() {
     decreaseLife();
     resetBall();
 
+    //moves the x and y axis of ball by adding the corisponding dx and dy. Makes ball move!
 
     ball.x += ball.dx;
     ball.y += ball.dy;
+
+    //next two if statements reverse ball direction if ball x intersects left or right canvas wall or if y axis of ball intersects 0 or top of canvas
 
     if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
         ball.dx *= -1;
@@ -153,12 +180,16 @@ function play() {
         ball.dy *= -1;
     }
 
+    //next if statement reverses direction of ball if intersects paddle, and briefly changes color for effect
+
     if (ball.x >= paddle.x &&
         ball.x <= paddle.x + paddle.width &&
         ball.y + ball.radius >= canvas.height - 12 - paddle.height) {
         paddle.draw('#ddeff9');
         ball.dy *= -1.1;
     }
+
+    //if life is greater than 0 and if the score is less than 64 the play function starts again, but if score equals 64 than the game is won or if life equals 0 the gamae is lost
 
     if (life > 0 && score < 64) {
         requestAnimationFrame(play);
@@ -173,6 +204,8 @@ function play() {
     }
 }
 
+//event listener for the left/right arrow key. When pressed the paddle moves 15 px left or right along the x axis
+
 window.addEventListener('keydown', (event) => {
     switch (event.key) {
         case 'ArrowLeft':
@@ -184,6 +217,8 @@ window.addEventListener('keydown', (event) => {
     }
 })
 
+//draws game title and assigns a color to each letter of title
+
 function drawTitle() {
     ctx.font = 'bold 80px serif';
     letterArray = ['B', 'R', 'E', 'A', 'K', 'O', 'U', 'T'];
@@ -193,6 +228,8 @@ function drawTitle() {
         ctx.fillText(letterArray[l], 70 + l * 60, canvas.height / 4.5);
     }
 }
+
+//draws game instructions
 
 function drawInstructions() {
     ctx.font = '22px serif';
@@ -206,6 +243,7 @@ function drawInstructions() {
     }
 }
 
+//when button is clicked this function starts, clears the canvas, resets the lives, resets the score, resets the brick array, and resets the paddle, then hides the buttons
 function startGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     life = 5;
