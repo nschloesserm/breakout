@@ -84,10 +84,13 @@ function drawBricks() {
 }
 
 function resetBall() {
-    ball.x = canvas.width/2;
-    ball.y = canvas.height - 100;
-    ball.dy = -speed * Math.random() - 1;
+    if (ball.y + ball.radius > canvas.height) {
+        ball.x = canvas.width/2;
+        ball.y = canvas.height - 100;
+        ball.dy = -speed * Math.random() - 1;
+    } 
 }
+
 
 function drawScore() {
     ctx.font = '25px Arial';
@@ -104,7 +107,6 @@ function drawScore() {
   function decreaseLife() {
     if (ball.y + ball.radius > canvas.height) {
         life = life - 1;
-        resetBall();
     }
   }
 
@@ -129,6 +131,7 @@ function play() {
     paddle.draw();
     collision();
     decreaseLife();
+    resetBall();
     
 
     ball.x += ball.dx;
